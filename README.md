@@ -9,10 +9,12 @@ Exemplo: DATABASE_URL = "mysql://(nome do usuario):(senha)@localhost:3306/(nome 
 
 Para usar essa tabela do banco de dados, garanta que ela exista no seu sistema
 
-Depois, rodar o migration para importar as tabelas do sistema para dentro do seu banco de dados
+Depois, rodar o migration para importar as tabelas do sistema para dentro do seu banco de dados.
+
 npx prisma migrate dev --name (nome da migration, pode escolher)
 
-Por fim usar o prisma generate para gerar as configurações dentro do arquivo do schema.prisma
+Por fim usar o prisma generate para gerar as configurações dentro do arquivo do schema.prisma. 
+
 npx prisma generate 
 
 Pode ser usar tanto o commando npm start tanto o npm run dev para executar o servidor
@@ -26,6 +28,7 @@ Caso queria saber o que cada rota faz, pode acessar o swagger e verificar a docu
 Se por algum motivo o prisma der problema ou a pasta for deletada, usar os seguintes comandos
 
 npm install prisma --save-dev
+
 npm install @prisma/client
 
 npx prisma init
