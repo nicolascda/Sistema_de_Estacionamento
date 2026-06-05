@@ -3,8 +3,16 @@ const prisma = require("../data/prisma.js");
 
 const listar = async (req, res) => {
     try {
-        const veiculos = await prisma.veiculos.findMany();
-        res.status(200).json(veiculos).end();
+        const veiculos = await prisma.veiculos.findMany({
+            include:  { client: true }
+        });
+
+        const resposta = veiculos.map(({ client, clientId, ...veiculo }) => ({
+            ...veiculo,          
+            cliente: client.nome 
+        }));
+
+        res.status(200).json(resposta).end();
     } catch (error) {
         res.status(500).json("Erro de servidor");
         throw error
