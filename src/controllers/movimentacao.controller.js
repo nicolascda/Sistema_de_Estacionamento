@@ -3,21 +3,22 @@ const prisma = require("../data/prisma.js");
 
 const listar = async (req, res) => {
     try {
-        const movimentacao = await prisma.movimentacao.findMany()
-            // include:  { client: true }
-        // });
+        const movimentacao = await prisma.movimentacao.findMany({
+            include:  { 
+                usuario: true,
+                vaga: true,
+                veiculo: true
+            }
+        });
 
-        // const resposta = veiculos.map(({ client, clientId, ...veiculo }) => ({
-        //     ...veiculo,          
-        //     cliente: client.nome 
-        // }));
+        const resposta = movimentacao.map(({ usuario, usuarioId, vaga , vagaId, veiculo, veiculoId, ...movimentacao }) => ({
+            ...movimentacao,          
+            usuario: usuario.nome,
+            vaga: vaga.numero,
+            veiculo: veiculo.placa
+        })); 
 
-        const teste = new Date("2026-01-01 10:30:00");
-
-        console.log(teste);           
-        console.log(teste.getHours());  
-
-        res.status(200).json(movimentacao).end();
+        res.status(200).json(resposta).end();
     } catch (error) {
         res.status(500).json("Erro de servidor");
         throw error
@@ -40,7 +41,7 @@ const entrar = async (req, res) => {
 
         if ( data.status && data.status != "ABERTO")
         {
-            return res.status(400).json("O status da movimentação tem que ser ABERTO")
+            return res.status(400).json({message: "O status da movimentação tem que ser ABERTO"})
         }
 
         if ( !Number(data.valorHora) || !Number(data.vagaId) ||  !Number(data.veiculoId) ||  !Number(data.usuarioId))
@@ -116,7 +117,7 @@ const sair = async (req, res) => {
         }
 
         if (dataSaida && isNaN(Date.parse(dataSaida)) ) {
-            return res.status(400).json({ mensagem: "O formato da data precisa ser AAAA-MM-DD HH:MM:SS ou Ano-Mês-Dia Horas:Minutos:Segundos " });
+            return res.status(400).json({ message: "O formato da data precisa ser AAAA-MM-DD HH:MM:SS ou Ano-Mês-Dia Horas:Minutos:Segundos" });
         }
 
         if (!id || !Number(id)) {
@@ -132,7 +133,7 @@ const sair = async (req, res) => {
 
         if (!ValorDaMovimentacao)
         {
-            return res.status(400).json({ error: "Movimentação não encontrada" })
+            return res.status(404).json({ error: "Movimentação não encontrada" })
         }
 
         // console.log( Math.floor((new Date(dataSaida).getTime()) / (60 * 60 * 1000)))
