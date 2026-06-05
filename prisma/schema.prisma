@@ -5,12 +5,12 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  // output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "mysql"
-  // url = evu("DATABASE_URL")
+  // url = env("DATABASE_URL")
 }
 
 model Usuario {
