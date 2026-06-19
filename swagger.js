@@ -8,7 +8,7 @@ const options = {
         openapi: "3.0.0",
 
         info: {
-            title: "APIs do sistema academia",
+            title: "APIs do sistema de estacionamento",
             
             version: "1.0.0",
 
